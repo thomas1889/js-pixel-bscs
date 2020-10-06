@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lastweek</title>
+    <script type='text/javascript'></script>
+</head>
+<body>
+    <h1>Last weeek challenges</h1>
+        
+                             Snap Pixel Code 
+
+    1- Remove the default placeholder for user parameter from the 'init' call
+
+    2- Fire a PAGE_VIEW event on all pages
+
+    3- Fire a VIEW_CONTENT event on product description pages
+    that also passes item_id and item_category parameters 
+    
+    4- Fire an ADD_CART event when the "Add to Cart button" is clicked
+    on product description pages. The Pixel event should also pass 
+    item_id, item_category, currency, and price parameters 
+    
+    5- Fire an ADD_CART and START_CHECKOUT event when the "Buy it Now" 
+    button is clicked the ADD_CART event should pass item_id and 
+    item_category parameters but the START_CHECKOUT event should not. 
+    
+    6- Fire a START_CHECKOUT event when the "Checkout" button is clicked
+    on the /cart page  
+    
+    7- Fire a SIGN_UP event when someone signs up for the newletter.
+    Tip: In order to pass a user parameter, it must be included in the 'init' call.
+    
+    
+    <noscript>
+    your browser doesn't have javascript activated! :(     
+    </noscript>
+   
+<!-- Snap Pixel Code -->
+<script type='text/javascript'>
+    (function(e,t,n){if(e.snaptr)return;var a=e.snaptr=function()
+    {a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};
+    a.queue=[];var s='script';r=t.createElement(s);r.async=!0;
+    r.src=n;var u=t.getElementsByTagName(s)[0];
+    u.parentNode.insertBefore(r,u);})(window,document,
+    'https://sc-static.net/scevent.min.js');
+    
+    snaptr('init', '61a3ccd5-db0e-4c44-86d4-24864f97f144');
+    snaptr('track', 'PAGE_VIEW');
+    if(document.body.classList.contains('template-product')) {
+        snaptr('track', 'VIEW_CONTENT', {
+            'item_ids': ShopifyAnalytics.meta.selectedVariantId,
+            'item_category': ShopifyAnalytics.meta.product.id 
+        })
+    }
+    
+    if(document.body.classList.contains('template-product')) {
+       document.getElementsByName('add').addEventListener('click', () => {
+           snaptr('track', 'ADD_CART', {
+               'item_ids': ShopifyAnalytics.meta.selectedVariantId,
+               'item_category': ShopifyAnalytics.meta.product.id,
+               'currency': ShopifyAnalytics.meta.currency,
+               'price': ShopifyAnalytics.meta.product.variants[0].price
+           })
+       })
+    }
+    if(document.body.classList.contains('template-product')) {
+       document.getElementsByClassName('shopify-payment-button__button')[0].addEventListener('click', () => {
+           snaptr('track', 'ADD_CART', {
+               'item_ids': ShopifyAnalytics.meta.selectedVariantId,
+               'item_category': ShopifyAnalytics.meta.product.id              
+           })
+           snaptr('track', 'START_CHECKOUT');
+       })
+    }
+    if(location.href.includes('cart')) {
+        document.getElementById('checkout').addEventListener('click', () => {
+            snaptr('track', 'START_CHECKOUT');
+        })
+    }
+    document.getElementById('Email').addEventListener('input', () => {
+        sessionStorage.email = document.getElementById('Email').value
+    })
+    document.getElementById('subscribe').addEventListener('click', () => {
+        snaptr('init', '61a3ccd5-db0e-4c44-86d4-24864f97f144', {
+            'user_email': sessionStorage.email
+        });
+        snaptr('track', 'SIGN_UP');
+    })
+</script>
+<!-- End Snap Pixel Code -->
+
+
+</body>
+</html>
